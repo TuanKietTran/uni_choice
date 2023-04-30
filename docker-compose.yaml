@@ -1,0 +1,24 @@
+version: '3.0'
+
+services:
+  mysql:
+    image: mysql:latest
+    volumes:
+      - db:/var/lib/mysql
+      - ./data:/docker-entrypoint-initdb.d
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: uni_choice
+      MYSQL_USER: uni_choice
+    ports:
+      - 3306:3306
+    networks:
+      - db_net
+    
+networks:
+  db_net:
+    driver: bridge
+
+volumes:
+  db:
