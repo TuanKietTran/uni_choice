@@ -8,26 +8,26 @@ namespace server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ProvinceController : ControllerBase
+public class UniversityController : ControllerBase
 {
-    private readonly ILogger<ProvinceController> _logger;
-    private readonly IProvinceRepo _provinceRepo;
+    private readonly ILogger<UniversityController> _logger;
+    private readonly IUniversityRepo _universityRepo;
 
-    public ProvinceController(ILogger<ProvinceController> logger)
+    public UniversityController(ILogger<UniversityController> logger)
     {
         _logger = logger;
-        _provinceRepo = new MysqlRepo("Server=localhost;User ID=root;Database=uni_choice;Password=rootpass");
+        _universityRepo = new MysqlRepo("Server=localhost;User ID=root;Database=uni_choice;Password=rootpass");
 
     }
     
-    [HttpGet, Route("/provinces")]
-    public async Task<List<Province>> GetProvinces()
+    [HttpGet, Route("/universities")]
+    public async Task<List<University>> GetUniversities()
     {
-        var getAllProvinceUc = new GetAllProvince(_provinceRepo);
-        List<Province> result;
+        var getAllUniversityUc = new GetAllUniversity(_universityRepo);
+        List<University> result;
         try
         {
-            result = await getAllProvinceUc.ExecuteUsecase();
+            result = await getAllUniversityUc.ExecuteUsecase();
         }
         catch (Exception e)
         {
@@ -38,15 +38,15 @@ public class ProvinceController : ControllerBase
         return result;
     }
 
-    [HttpGet, Route("/province")]
-    public async Task<Province> GetProvinceByCode([FromQuery
-        (Name = "code")] int code = 1)
+    [HttpGet, Route("/university")]
+    public async Task<University> GetUniversityByCode([FromQuery
+        (Name = "code")] string code = "QSB")
     {
-        var getProvinceByCodeUc = new GetProvinceByCode(_provinceRepo, code);
-        Province result;
+        var getUniversityByCodeUc = new GetUniversityByCode(_universityRepo, code);
+        University result;
         try
         {
-            result = await getProvinceByCodeUc.ExecuteUsecase();
+            result = await getUniversityByCodeUc.ExecuteUsecase();
         }
         catch (Exception e)
         {

@@ -1,6 +1,6 @@
 namespace server.Domain;
 
-public class Score
+public class CandidateScore
 {
     public string StudentId { get; set; } = string.Empty;
     public int ProvinceCode { get; set; }

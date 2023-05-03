@@ -2,7 +2,7 @@ using server.Domain;
 
 namespace server.Usecase.Repo;
 
-public interface IScoreRepo
+public interface ICandidateScoreRepo
 {
     Task<CandidateScore> GetMark(string studentId, int year);
 }

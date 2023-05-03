@@ -3,18 +3,21 @@ using server.Usecase.Repo;
 
 namespace server.Usecase;
 
-public class GetAllUniversity: IUsecase<List<University>>
+public class GetMajorsOfUni: IUsecase<List<Major>>
 {
 
-    private readonly IUniversityRepo _universityRepo;
+    private readonly IMajorRepo _majorRepo;
+    private readonly string _uniCode;
 
-    public GetAllUniversity(IUniversityRepo universityRepo)
+    public GetMajorsOfUni(IMajorRepo majorRepo, string uniCode)
     {
-        _universityRepo = universityRepo;
+        _majorRepo = majorRepo;
+        _uniCode = uniCode;
+
     }
     
-    public Task<List<University>> ExecuteUsecase()
+    public Task<List<Major>> ExecuteUsecase()
     {
-        return _universityRepo.GetAllUniversity();
+        return _majorRepo.GetMajorsOfUni(_uniCode);
     }
 }

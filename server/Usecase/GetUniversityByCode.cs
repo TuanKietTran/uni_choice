@@ -3,21 +3,22 @@ using server.Usecase.Repo;
 
 namespace server.Usecase;
 
-public class GetProvinceByCode: IUsecase<Province>
+public class GetUniversityByCode: IUsecase<University>
 {
+    private const int LimitCode = 3;
+    private readonly IUniversityRepo _universityRepo;
+    private readonly string _code;
 
-    private readonly IProvinceRepo _provinceRepo;
-    private readonly int _code;
-
-    public GetProvinceByCode(IProvinceRepo provinceRepo, int code)
+    public GetUniversityByCode(IUniversityRepo universityRepo, string code)
     {
-        _provinceRepo = provinceRepo;
+        _universityRepo = universityRepo;
+        if (code.Length != LimitCode) throw new UniNotFound(code);
         _code = code;
     }
     
     
-    public Task<Province> ExecuteUsecase()
+    public Task<University> ExecuteUsecase()
     {
-        return _provinceRepo.GetProvinceByCode(_code);
+        return _universityRepo.GetUniversityByCode(_code);
     }
 }

@@ -3,18 +3,18 @@ using server.Usecase.Repo;
 
 namespace server.Usecase;
 
-public class GetAllProvince: IUsecase<List<Province>>
+public class GetAllUniversity: IUsecase<List<University>>
 {
 
-    private readonly IProvinceRepo _provinceRepo;
+    private readonly IUniversityRepo _universityRepo;
 
-    public GetAllProvince(IProvinceRepo provinceRepo)
+    public GetAllUniversity(IUniversityRepo universityRepo)
     {
-        _provinceRepo = provinceRepo;
+        _universityRepo = universityRepo;
     }
     
-    public Task<List<Province>> ExecuteUsecase()
+    public Task<List<University>> ExecuteUsecase()
     {
-        return _provinceRepo.GetAllProvince();
+        return _universityRepo.GetAllUniversity();
     }
 }

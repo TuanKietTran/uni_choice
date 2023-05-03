@@ -8,26 +8,27 @@ namespace server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ProvinceController : ControllerBase
+public class MajorController : ControllerBase
 {
-    private readonly ILogger<ProvinceController> _logger;
-    private readonly IProvinceRepo _provinceRepo;
+    private readonly ILogger<MajorController> _logger;
+    private readonly IMajorRepo _majorRepo;
 
-    public ProvinceController(ILogger<ProvinceController> logger)
+    public MajorController(ILogger<MajorController> logger)
     {
         _logger = logger;
-        _provinceRepo = new MysqlRepo("Server=localhost;User ID=root;Database=uni_choice;Password=rootpass");
+        _majorRepo = new MysqlRepo("Server=localhost;User ID=root;Database=uni_choice;Password=rootpass");
 
     }
     
-    [HttpGet, Route("/provinces")]
-    public async Task<List<Province>> GetProvinces()
+    [HttpGet, Route("/majors")]
+    public async Task<List<Major>> GetTopMajorsByMark([FromQuery
+        (Name = "threshold")] int threshold = 150)
     {
-        var getAllProvinceUc = new GetAllProvince(_provinceRepo);
-        List<Province> result;
+        var getTopMajorsByMarkUc = new GetTopMajorsByMark(_majorRepo, threshold);
+        List<Major> result;
         try
         {
-            result = await getAllProvinceUc.ExecuteUsecase();
+            result = await getTopMajorsByMarkUc.ExecuteUsecase();
         }
         catch (Exception e)
         {
@@ -38,15 +39,34 @@ public class ProvinceController : ControllerBase
         return result;
     }
 
-    [HttpGet, Route("/province")]
-    public async Task<Province> GetProvinceByCode([FromQuery
-        (Name = "code")] int code = 1)
+    [HttpGet, Route("/major")]
+    public async Task<List<Major>> GetMajorsOfUni([FromQuery
+        (Name = "uni")] string uniCode)
     {
-        var getProvinceByCodeUc = new GetProvinceByCode(_provinceRepo, code);
-        Province result;
+        var getMajorsOfUni = new GetMajorsOfUni(_majorRepo, uniCode);
+        List<Major> result;
         try
         {
-            result = await getProvinceByCodeUc.ExecuteUsecase();
+            result = await getMajorsOfUni.ExecuteUsecase();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Fetch failed");
+            throw;
+        }
+
+        return result;
+    }
+    
+    [HttpGet, Route("/major/at")]
+    public async Task<List<string>> GetGroupSubject([FromQuery
+        (Name = "major")] string majorCode)
+    {
+        var getGroupSubject = new GetGroupSubject(_majorRepo, majorCode);
+        List<string> result;
+        try
+        {
+            result = await getGroupSubject.ExecuteUsecase();
         }
         catch (Exception e)
         {

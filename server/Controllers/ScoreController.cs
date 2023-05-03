@@ -8,46 +8,28 @@ namespace server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class MajorController : ControllerBase
+public class ScoreController : ControllerBase
 {
-    private readonly ILogger<MajorController> _logger;
-    private readonly IMajorRepo _majorRepo;
+    private readonly ILogger<ScoreController> _logger;
+    private readonly ICandidateScoreRepo _candidateScoreRepo;
 
-    public MajorController(ILogger<MajorController> logger)
+    public ScoreController(ILogger<ScoreController> logger)
     {
         _logger = logger;
-        _majorRepo = new MysqlRepo("Server=localhost;User ID=root;Database=uni_choice;Password=rootpass");
+        _candidateScoreRepo = new MysqlRepo("Server=localhost;User ID=root;Database=uni_choice;Password=rootpass");
 
     }
     
-    [HttpGet, Route("/majors")]
-    public async Task<List<Major>> GetTopMajorsByMark([FromQuery
-        (Name = "code")] int threshold = 20)
+    [HttpGet, Route("/score")]
+    public async Task<CandidateScore> GetScore([FromQuery
+        (Name = "id")] string studentId, [FromQuery
+        (Name = "year")] int year = 2018)
     {
-        var getTopMajorsByMarkUc = new GetTopMajorsByMark(_majorRepo, threshold);
-        List<Major> result;
+        var getCandidateScore = new GetCandidateScore(_candidateScoreRepo, studentId, year);
+        CandidateScore result;
         try
         {
-            result = await getTopMajorsByMarkUc.ExecuteUsecase();
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Fetch failed");
-            throw;
-        }
-
-        return result;
-    }
-
-    [HttpGet, Route("/major")]
-    public async Task<List<Major>> GetMajorsOfUni([FromQuery
-        (Name = "uni_code")] string code)
-    {
-        var getMajorsOfUni = new GetMajorsOfUni(_majorRepo, code);
-        List<Major> result;
-        try
-        {
-            result = await getMajorsOfUni.ExecuteUsecase();
+            result = await getCandidateScore.ExecuteUsecase();
         }
         catch (Exception e)
         {

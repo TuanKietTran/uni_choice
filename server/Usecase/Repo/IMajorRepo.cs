@@ -2,19 +2,23 @@ using server.Domain;
 
 namespace server.Usecase.Repo;
 
-public interface IUniversityRepo
+public interface IMajorRepo
 {
-    Task<University> GetUniversityByCode(string code);
+    Task<Major> GetMajorByCode(string code);
     
-    Task<List<University>> GetAllUniversity();
+    Task<List<Major>> GetMajorsOfUni(string uniCode);
+    
+    Task<List<Major>> GetTopMajorsByMark(int threshold = 20);
+
+    Task<List<string>> GetGroupSubject(string major);
 }
 
-public class UniNotFound : Exception
+public class MajorNotFound : Exception
 {
     private string _message;
 
-    public UniNotFound(string code)
+    public MajorNotFound(string code)
     {
-        _message = $"University {code} Not Found";
+        _message = $"Major {code} Not Found";
     }
 }

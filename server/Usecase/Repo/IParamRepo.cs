@@ -1,6 +1,8 @@
+using server.Domain;
+
 namespace server.Usecase.Repo;
 
-public class IParamRepo
+public interface IParamRepo
 {
-    
+    Task<HyperParam> GetParamBySubject(string subject);
 }
